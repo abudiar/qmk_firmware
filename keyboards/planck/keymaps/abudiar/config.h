@@ -1,0 +1,33 @@
+#pragma once
+#define RGB_DI_PIN B6
+#define RGBLED_NUM 12
+
+#define RGBLIGHT_LIMIT_VAL 150
+#define RGBLIGHT_ANIMATIONS
+
+#include QMK_KEYBOARD_CONFIG_H
+
+#define TAPPING_TERM 175
+#define TAPPING_TOGGLE 2
+
+#define MOUSEKEY_INTERVAL 16
+#define MOUSEKEY_DELAY 0
+#define MOUSEKEY_TIME_TO_MAX 60
+#define MOUSEKEY_MAX_SPEED 7
+#define MOUSEKEY_WHEEL_DELAY 0
+
+// Hand wired Planck!
+
+#undef MATRIX_ROW_PINS
+#undef MATRIX_COL_PINS
+#undef QMK_ESC_OUTPUT
+#undef QMK_ESC_INPUT
+#undef QMK_LED
+#undef QMK_SPEAKER
+#undef AUDIO_VOICES
+#undef C6_AUDIO
+
+#define MATRIX_ROW_PINS \
+    { E6, B4, B2, B5 }
+#define MATRIX_COL_PINS \
+    { B3, B1, F7, F6, F5, F4, D3, D2, D1, D0, D4, C6 }
