@@ -83,8 +83,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_XTRA] = LAYOUT_preonic_grid(
         _______,      _______,  _______,   _______,  _______,  _______,  _______,  _______,        KC_MS_WH_UP,   _______,      _______,  _______,
         TG(_SYS),     TG(_MAC), TG(_F),    TG(_G),   _______,  KC_MUTE,  KC_MPLY,  KC_MS_WH_LEFT,  KC_MS_WH_DOWN, _______,      _______,  _______,
-        _______,      TG(_H),   TG(_I),    TG(_J),   _______,  KC_VOLU,  KC_MNXT,  KC_MS_BTN1,     KC_MS_UP,      KC_MS_BTN2,   _______,  _______,
-        _______,      TG(_K),   TG(_L),    TG(_M),   _______,  KC_VOLD,  KC_MPRV,  KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,  KC_PGUP,  KC_MS_WH_RIGHT,
+        TO(_MAIN),    TG(_H),   TG(_I),    TG(_J),   _______,  KC_VOLU,  KC_MNXT,  KC_MS_BTN1,     KC_MS_UP,      KC_MS_BTN2,   _______,  _______,
+        TO(_MAIN),    TG(_K),   TG(_L),    TG(_M),   _______,  KC_VOLD,  KC_MPRV,  KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,  KC_PGUP,  KC_MS_WH_RIGHT,
         TO(_MAIN),    _______,  _______,   _______,  _______,  _______,  XXXXXXX,  _______,        _______,       KC_HOME,      KC_PGDN,  KC_END
     ),
 
@@ -365,7 +365,17 @@ void matrix_scan_user(void) {
         rgblight_setrgb(RGB_WHITE);
         rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
         rgblight_setrgb(RGB_WHITE);
+    } else if (layer == _XTRA || layer == _FKEY || layer == _NUMP) {
+        rgblight_setrgb(RGB_RED);
+        rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+        rgblight_setrgb(RGB_RED);
+    } else if (layer == _MAC) {
+        rgblight_setrgb(RGB_PINK);
+        rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+        rgblight_setrgb(RGB_PINK);
     } else if (layer == _SYS) {
+        rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 1);
+        rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 1);
         rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 1);
     } else {
         // rgblight_mode(RGBLIGHT_MODE_BREATHING + 8);
