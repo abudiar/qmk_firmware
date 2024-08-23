@@ -78,12 +78,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |         |         |         |         |         |         |         |         |         |  HOME   |  PGDN   |   END   |
      * -------------------------------------------------------------------------------------------------------------------------
      */
+    // [_XTRA] = LAYOUT_preonic_grid(
+    //     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,     _______,       _______,    _______,     _______,
+    //     TO(_N),   TO(_E),   TO(_F),   TO(_G),   _______,  KC_MUTE,  KC_MPLY,  _______,     _______,       KC_MS_UP,   _______,     KC_MS_WH_UP,
+    //     _______,  TO(_H),   TO(_I),   TO(_J),   _______,  KC_VOLU,  KC_MNXT,  _______,     KC_MS_LEFT,    KC_MS_DOWN, KC_MS_RIGHT, KC_MS_WH_DOWN,
+    //     _______,  TO(_K),   TO(_L),   TO(_M),   _______,  KC_VOLD,  KC_MPRV,  _______,     KC_MS_WH_LEFT, _______,    KC_PGUP,     KC_MS_WH_RIGHT,
+    //     _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_MS_BTN1,  KC_MS_BTN2,    KC_HOME,    KC_PGDN,     KC_END
+    // ),
     [_XTRA] = LAYOUT_preonic_grid(
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,     _______,       _______,    _______,     _______,
-        TO(_N),   TO(_E),   TO(_F),   TO(_G),   _______,  KC_MUTE,  KC_MPLY,  _______,     _______,       KC_MS_UP,   _______,     KC_MS_WH_UP,
-        _______,  TO(_H),   TO(_I),   TO(_J),   _______,  KC_VOLU,  KC_MNXT,  _______,     KC_MS_LEFT,    KC_MS_DOWN, KC_MS_RIGHT, KC_MS_WH_DOWN,
-        _______,  TO(_K),   TO(_L),   TO(_M),   _______,  KC_VOLD,  KC_MNXT,  _______,     KC_MS_WH_LEFT, _______,    KC_PGUP,     KC_MS_WH_RIGHT,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_MS_BTN1,  KC_MS_BTN2,    KC_HOME,    KC_PGDN,     KC_END
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,        KC_MS_WH_UP,   _______,      _______,  _______,
+        TO(_N),   TO(_E),   TO(_F),   TO(_G),   _______,  KC_MUTE,  KC_MPLY,  KC_MS_WH_LEFT,  KC_MS_WH_DOWN, _______,      _______,  _______,
+        _______,  TO(_H),   TO(_I),   TO(_J),   _______,  KC_VOLU,  KC_MNXT,  KC_MS_BTN1,     KC_MS_UP,      KC_MS_BTN2,   _______,  _______,
+        _______,  TO(_K),   TO(_L),   TO(_M),   _______,  KC_VOLD,  KC_MPRV,  KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,  KC_PGUP,  KC_MS_WH_RIGHT,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,        _______,       KC_HOME,      KC_PGDN,  KC_END
     ),
 
     /*  _F_KEYS
