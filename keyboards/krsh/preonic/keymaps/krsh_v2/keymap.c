@@ -4,35 +4,50 @@ extern rgblight_config_t rgblight_config;
 
 // qmk compile -kb krsh/preonic/rev2 -km krsh_v2
 
-enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
-  XTRA,
-  LOWER,
-  RAISE,
+enum krsh_layers {
+  _MAIN,
+  _MAC,
+  _FKEY,
+  _NUMP,
+  _F,
+  _G,
+  _H,
+  _I,
+  _J,
+  _K,
+  _L,
+  _M,
+  _SYS,
+  _LYRS,
 };
 
-#define _MAIN 0
-#define _XTRA 1
-#define _FKEY 2
-#define _NUMP 3
-#define _MAC 4
-#define _F 5
-#define _G 6
-#define _H 7
-#define _I 8
-#define _J 9
-#define _K 10
-#define _L 11
-#define _M 12
-#define _SYS 13
+enum cusom_keycodes {
+  MAIN =  SAFE_RANGE,
+  MAC,
+  FKEY,
+  NUMP,
+  F,
+  G,
+  H,
+  I,
+  J,
+  K,
+  L,
+  M,
+  SYS,
+  LYRS,
+  K_SLEEP
+};
+
 
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [_MAIN] = { ENCODER_CCW_CW(KC_MS_WH_UP, KC_MS_WH_DOWN) },
-    [_XTRA] = { ENCODER_CCW_CW(UG_HUED, UG_HUEU) },
+    [_MAIN] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [_MAC] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
     [_FKEY] = { ENCODER_CCW_CW(UG_VALD, UG_VALU) },
     [_NUMP] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
-    [_MAC] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
+    [_LYRS] = { ENCODER_CCW_CW(UG_HUED, UG_HUEU) },
+    [_SYS] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
     [_F] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
     [_G] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
     [_H] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
@@ -41,7 +56,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [_K] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
     [_L] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
     [_M] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
-    [_SYS] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
 };
 #endif
 
@@ -64,70 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,    KC_Y,     KC_U,        KC_I,     KC_O,     KC_P,     KC_BSPC,
         KC_CAPS,    KC_A,       KC_S,       KC_D,       KC_F,       KC_G,    KC_H,     KC_J,        KC_K,     KC_L,     KC_SCLN,  KC_QUOT,
         KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,    KC_N,     KC_M,        KC_COMM,  KC_DOT,   KC_UP,    RSFT_T(KC_ENT),
-        KC_LCTL,    KC_LALT,    KC_LGUI,    MO(_XTRA),  TT(_NUMP),  KC_SPC,  XXXXXXX,  TT(_FKEY),   KC_SLSH,  KC_LEFT,  KC_DOWN,  KC_RGHT
-    ),
-
-    /*  _XTRA
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |         |         |         |         |         |         |         | M Wh ^  |         |         |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * | TG_SYS  | TG_MAC  |  TG_F   |  TG_G   |         |   Mute  |   Play  | M Wh <  | M Wh V  | M Wh >  |         |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |  TG_H   |  TG_I   |  TG_J   |         |   Vol+  |   Next  |M Clk Lft|   M ^   |M Clk Rgt|         |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |  TG_K   |  TG_L   |  TG_M   |         |   Vol-  |   Prev  |   M <   |   M V   |   M >   |  PGUP   |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * | TO_MAIN |         |         |         |         |                   |         |         |  HOME   |  PGDN   |   END   |
-     * -------------------------------------------------------------------------------------------------------------------------
-     */
-    [_XTRA] = LAYOUT_preonic_grid(
-        _______,      _______,  _______,   _______,  _______,  _______,  _______,  _______,        KC_MS_WH_UP,   _______,      _______,  _______,
-        TG(_SYS),     TG(_MAC), TG(_F),    TG(_G),   _______,  KC_MUTE,  KC_MPLY,  KC_MS_WH_LEFT,  KC_MS_WH_DOWN, _______,      _______,  _______,
-        TO(_MAIN),    TG(_H),   TG(_I),    TG(_J),   _______,  KC_VOLU,  KC_MNXT,  KC_MS_BTN1,     KC_MS_UP,      KC_MS_BTN2,   _______,  _______,
-        TO(_MAIN),    TG(_K),   TG(_L),    TG(_M),   _______,  KC_VOLD,  KC_MPRV,  KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,  KC_PGUP,  KC_MS_WH_RIGHT,
-        TO(_MAIN),    _______,  _______,   _______,  _______,  _______,  XXXXXXX,  _______,        _______,       KC_HOME,      KC_PGDN,  KC_END
-    ),
-
-    /*  _FKEY
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |   F1    |   F2    |   F3    |   F4    |   F5    |   F6    |   F7    |   F8    |   F9    |   F10   |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |   ESC   |   F11   |   F12   |         |         |    (    |    )    |    "    |    !    |    @    |    #    |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |  BSLS   |         |         |         |         |    [    |    ]    |    '    |    $    |    %    |    ^    |  HOME   |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |         |         |         |         |    {    |    }    |    `    |    &    |    -    |    =    |   END   |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |         |         |         |         |                   |         |         |         |         |   INS   |
-     * -------------------------------------------------------------------------------------------------------------------------
-     */
-    [_FKEY] = LAYOUT_preonic_grid(
-        _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   _______,
-        KC_ESC,   KC_F11,   KC_F12,   _______,  _______,  KC_LPRN,  KC_RPRN,  KC_DQUO,  KC_EXLM,  KC_AT,    KC_HASH,  _______,
-        KC_BSLS,  _______,  _______,  _______,  _______,  KC_LBRC,  KC_RBRC,  KC_QUOT,  KC_DLR,   KC_PERC,  KC_CIRC,  KC_HOME,
-        _______,  _______,  _______,  _______,  _______,  KC_LCBR,  KC_RCBR,  KC_GRV,   KC_AMPR,  KC_MINS,  KC_EQL,   KC_END,
-        _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  _______,  _______,  _______,  _______,  KC_INS
-    ),
-
-    /*  _NUMP
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |         |         |         |         |         |         |         |         |         |         |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |         |         |         |         |         |    *    |    /    |   P7    |   P8    |   P9    |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |         |         |         |         |         |    +    |    -    |   P4    |   P5    |   P6    | Num Lck |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |         |         |         |         |         |         |    =    |   P1    |   P2    |   P3    |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |         |         |         |         |                   |         |    .    |   P0    |         |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     */
-    [_NUMP] = LAYOUT_preonic_grid(
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-        _______,  _______,  _______,  _______,  _______,  _______,  KC_PAST,  KC_PSLS,  KC_P7,    KC_P8,    KC_P9,    _______,
-        _______,  _______,  _______,  _______,  _______,  _______,  KC_PPLS,  KC_PMNS,  KC_P4,    KC_P5,    KC_P6,    KC_NUM,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_EQL,   KC_P1,    KC_P2,    KC_P3,    _______,
-        _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  _______,  KC_PDOT,  KC_P0,    _______,  _______
+        KC_LCTL,    KC_LALT,    KC_LGUI,    MO(_LYRS),  TT(_NUMP),  KC_SPC,  XXXXXXX,  TT(_FKEY),   KC_SLSH,  KC_LEFT,  KC_DOWN,  KC_RGHT
     ),
 
     /*  _MAC
@@ -149,6 +100,90 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
         KC_LGUI,  _______,  KC_LCTL,  _______,  _______,  _______,  XXXXXXX,  _______,  _______,  _______,  _______,  _______
+    ),
+
+    /*  _FKEY
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |   F1    |   F2    |   F3    |   F4    |   F5    |   F6    |   F7    |   F8    |   F9    |   F10   |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |   ESC   |   F11   |   F12   |         |         |    (    |    )    |    "    |    !    |    @    |    #    |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |   BSLS  |         |         |         |         |    [    |    ]    |    '    |    $    |    %    |    ^    |  HOME   |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |    {    |    }    |    `    |    &    |    -    |    =    |   END   |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |                   |         |         |         |         |   INS   |
+     * -------------------------------------------------------------------------------------------------------------------------
+     */
+    [_FKEY] = LAYOUT_preonic_grid(
+        _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   _______,
+        KC_ESC,   KC_F11,   KC_F12,   _______,  _______,  KC_LPRN,  KC_RPRN,  KC_DQUO,  KC_EXLM,  KC_AT,    KC_HASH,  _______,
+        KC_BSLS,  _______,  _______,  _______,  _______,  KC_LBRC,  KC_RBRC,  KC_QUOT,  KC_DLR,   KC_PERC,  KC_CIRC,  KC_HOME,
+        _______,  _______,  _______,  _______,  _______,  KC_LCBR,  KC_RCBR,  KC_GRV,   KC_AMPR,  KC_MINS,  KC_EQL,   KC_END,
+        _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  _______,  _______,  _______,  _______,  KC_INS
+    ),
+
+    /*  _NUMP
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |   F1    |   F2    |   F3    |   F4    |   F5    |   F6    |   F7    |   F8    |   F9    |   F10   |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |   ESC   |   F11   |   F12   |         |         |         |    *    |    /    |   P7    |   P8    |   P9    | Num Lck |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |   BSLS  |         |         |         |         |         |    +    |    -    |   P4    |   P5    |   P6    |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |         |         |    =    |   P1    |   P2    |   P3    |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |                   |         |    .    |   P0    |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     */
+    [_NUMP] = LAYOUT_preonic_grid(
+        _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   _______,
+        KC_ESC,   KC_F11,   KC_F12,   _______,  _______,  _______,  KC_PAST,  KC_PSLS,  KC_P7,    KC_P8,    KC_P9,    KC_NUM,
+        KC_BSLS,  _______,  _______,  _______,  _______,  _______,  KC_PPLS,  KC_PMNS,  KC_P4,    KC_P5,    KC_P6,    _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_EQL,   KC_P1,    KC_P2,    KC_P3,    _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  _______,  KC_PDOT,  KC_P0,    _______,  _______
+    ),
+
+    /*  _LYRS
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |         |         |         | M Wh ^  |         |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * | TG_SYS  | TG_MAC  |  TG_F   |  TG_G   |         |   Mute  |   Play  | M Wh <  | M Wh V  | M Wh >  |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |  TG_H   |  TG_I   |  TG_J   |         |   Vol+  |   Next  |M Clk Lft|   M ^   |M Clk Rgt|         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |  TG_K   |  TG_L   |  TG_M   |         |   Vol-  |   Prev  |   M <   |   M V   |   M >   |  PGUP   |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * | TO_MAIN |         |         |         |         |                   |         |         |  HOME   |  PGDN   |   END   |
+     * -------------------------------------------------------------------------------------------------------------------------
+     */
+    [_LYRS] = LAYOUT_preonic_grid(
+        _______,      _______,  _______,   _______,  _______,  _______,  _______,  _______,        KC_MS_WH_UP,   _______,      _______,  _______,
+        TG(_SYS),     TG(_MAC), TG(_F),    TG(_G),   _______,  KC_MUTE,  KC_MPLY,  KC_MS_WH_LEFT,  KC_MS_WH_DOWN, _______,      _______,  _______,
+        TO(_MAIN),    TG(_H),   TG(_I),    TG(_J),   _______,  KC_VOLU,  KC_MNXT,  KC_MS_BTN1,     KC_MS_UP,      KC_MS_BTN2,   _______,  _______,
+        TO(_MAIN),    TG(_K),   TG(_L),    TG(_M),   _______,  KC_VOLD,  KC_MPRV,  KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,  KC_PGUP,  KC_MS_WH_RIGHT,
+        TO(_MAIN),    _______,  _______,   _______,  _______,  _______,  XXXXXXX,  _______,        _______,       KC_HOME,      KC_PGDN,  KC_END
+    ),
+
+    /*  _SYS
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |         |         |         |         |         |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |  RESET  |  DEBUG  |         |         |         |         |         |         |         |         |         |   TO0   |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * | RGB-TOG | RGB-MOD | RGB-HUI | RGB-SAI | RGB-VAI | RGB-SPI | RGB-MP  | RGB-MR  | RGB-MSN | RGB-MX  |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |RGB-RMOD | RGB-HUD | RGB-SAD | RGB-VAD | RGB-SPD | RGB-MB  | RGB-MSW | RGB-MK  | RGB-MG  |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |                   |         |         |         |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     */
+    [_SYS] = LAYOUT_preonic_grid(
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  QK_BOOT,
+        K_SLEEP,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
+        RGB_TOG,  RGB_MOD,  RGB_HUI,  RGB_SAI,  RGB_VAI,  RGB_SPI,  RGB_M_P,  RGB_M_R,  RGB_M_SN, RGB_M_X,  _______,  _______,
+        _______,  RGB_RMOD, RGB_HUD,  RGB_SAD,  RGB_VAD,  RGB_SPD,  RGB_M_B,  RGB_M_SW, RGB_M_K,  RGB_M_G,  _______,  _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  _______,  _______,  _______,  _______,  _______
     ),
 
     /*  _F
@@ -318,28 +353,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  _______,  _______,  _______,  _______,  _______
     ),
-
-    /*  _SYS
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |         |         |         |         |         |         |         |         |         |         |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |  RESET  |  DEBUG  |         |         |         |         |         |         |         |         |         |   TO0   |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * | RGB-TOG | RGB-MOD | RGB-HUI | RGB-SAI | RGB-VAI | RGB-SPI | RGB-MP  | RGB-MR  | RGB-MSN | RGB-MX  |         |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |RGB-RMOD | RGB-HUD | RGB-SAD | RGB-VAD | RGB-SPD | RGB-MB  | RGB-MSW | RGB-MK  | RGB-MG  |         |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     * |         |         |         |         |         |                   |         |         |         |         |         |
-     * -------------------------------------------------------------------------------------------------------------------------
-     */
-    [_SYS] = LAYOUT_preonic_grid(
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  QK_BOOT,
-        KC_SLEP,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-        RGB_TOG,  RGB_MOD,  RGB_HUI,  RGB_SAI,  RGB_VAI,  RGB_SPI,  RGB_M_P,  RGB_M_R,  RGB_M_SN, RGB_M_X,  _______,  _______,
-        _______,  RGB_RMOD, RGB_HUD,  RGB_SAD,  RGB_VAD,  RGB_SPD,  RGB_M_B,  RGB_M_SW, RGB_M_K,  RGB_M_G,  _______,  _______,
-        _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  _______,  _______,  _______,  _______,  _______
-    )
-
 };
 
 // Set a layer persistently.
@@ -353,6 +366,7 @@ bool RGB_INIT      = false;
 bool TOG_STATUS    = false;
 bool NUMLAY_STATUS = false; // this can be named for any toggle layer
 int  RGB_current_mode;
+uint8_t RGB_LAYER  = 0;
 
 void matrix_scan_user(void) {
     uint8_t layer = biton32(layer_state);
@@ -362,26 +376,37 @@ void matrix_scan_user(void) {
         RGB_INIT         = true;
     }
     if (layer == _MAIN) {
+        RGB_LAYER = _MAIN;
         rgblight_setrgb(RGB_WHITE);
         rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
         rgblight_setrgb(RGB_WHITE);
-    } else if (layer == _XTRA || layer == _FKEY || layer == _NUMP) {
-        rgblight_setrgb(RGB_RED);
-        rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-        rgblight_setrgb(RGB_RED);
+    } else if (layer == _LYRS || layer == _FKEY || layer == _NUMP) {
+        if (RGB_LAYER != _LYRS || RGB_LAYER != _FKEY || RGB_LAYER != _NUMP) {
+            RGB_LAYER = layer;
+            rgblight_setrgb(RGB_RED);
+            rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+            rgblight_setrgb(RGB_RED);
+        }
     } else if (layer == _MAC) {
-        rgblight_setrgb(RGB_PINK);
-        rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-        rgblight_setrgb(RGB_PINK);
+        if (RGB_LAYER != _MAC) {
+            RGB_LAYER = layer;
+            rgblight_setrgb(RGB_PINK);
+            rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+            rgblight_setrgb(RGB_PINK);
+        }
     } else if (layer == _SYS) {
-        rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 1);
-        rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 1);
-        rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 1);
+        if (RGB_LAYER != _SYS) {
+            RGB_LAYER = layer;
+            rgblight_setrgb(RGB_GREEN);
+            rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+            rgblight_setrgb(RGB_GREEN);
+        }
     } else {
         // rgblight_mode(RGBLIGHT_MODE_BREATHING + 8);
-        rgblight_setrgb(RGB_RED);
+        RGB_LAYER = layer;
+        rgblight_setrgb(RGB_BLUE);
         rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-        rgblight_setrgb(RGB_RED);
+        rgblight_setrgb(RGB_BLUE);
     }
     //   switch (layer) {
     //     case _NUMP:
@@ -406,7 +431,7 @@ void matrix_scan_user(void) {
     //           rgblight_mode(RGBLIGHT_MODE_BREATHING + 8);
     //         }
     //         break;
-    //     case _XTRA:
+    //     case _LYRS:
     //         if (RGB_INIT) {} else {
     //           RGB_current_mode = rgblight_config.mode;
     //           RGB_INIT = true;
@@ -431,49 +456,53 @@ void matrix_scan_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case QWERTY:
+        case K_SLEEP:
             if (record->event.pressed) {
-                persistent_default_layer_set(1UL << _MAIN);
-            }
-            return false;
-            break;
-        case LOWER:
-            if (record->event.pressed) {
-                layer_on(_FKEY);
-                update_tri_layer(_FKEY, _NUMP, _XTRA);
+              tap_code(KC_SLEP);
+              layer_move(_MAIN);
+              // Do something when pressed
             } else {
-                layer_off(_FKEY);
-                update_tri_layer(_FKEY, _NUMP, _XTRA);
+              // Do something else when release
             }
             return false;
-            break;
-        case RAISE:
-            if (record->event.pressed) {
-                layer_on(_NUMP);
-                update_tri_layer(_FKEY, _NUMP, _XTRA);
-            } else {
-                layer_off(_NUMP);
-                update_tri_layer(_FKEY, _NUMP, _XTRA);
-            }
-            return false;
-            break;
-        case XTRA:
-            if (record->event.pressed) {
-                layer_on(_XTRA);
-            } else {
-                layer_off(_XTRA);
-            }
-            return false;
-            break;
-        case RGB_MOD:
-            // led operations - RGB mode change now updates the RGB_current_mode to allow the right RGB mode to be set after reactive keys are released
-            if (record->event.pressed) {
-                rgblight_mode(RGB_current_mode);
-                rgblight_step();
-                RGB_current_mode = rgblight_config.mode;
-            }
-            return false;
-            break;
+        // case _MAIN:
+        //     if (record->event.pressed) {
+        //         persistent_default_layer_set(1UL << _MAIN);
+        //     }
+        //     return false;
+        // case _FKEY:
+        //     if (record->event.pressed) {
+        //         layer_on(_FKEY);
+        //         update_tri_layer(_FKEY, _NUMP, _LYRS);
+        //     } else {
+        //         layer_off(_FKEY);
+        //         update_tri_layer(_FKEY, _NUMP, _LYRS);
+        //     }
+        //     return false;
+        // case _NUMP:
+        //     if (record->event.pressed) {
+        //         layer_on(_NUMP);
+        //         update_tri_layer(_FKEY, _NUMP, _LYRS);
+        //     } else {
+        //         layer_off(_NUMP);
+        //         update_tri_layer(_FKEY, _NUMP, _LYRS);
+        //     }
+        //     return false;
+        // case _LYRS:
+        //     if (record->event.pressed) {
+        //         layer_on(_LYRS);
+        //     } else {
+        //         layer_off(_LYRS);
+        //     }
+        //     return false;
+        // case RGB_MOD:
+        //     // led operations - RGB mode change now updates the RGB_current_mode to allow the right RGB mode to be set after reactive keys are released
+        //     if (record->event.pressed) {
+        //         rgblight_mode(RGB_current_mode);
+        //         rgblight_step();
+        //         RGB_current_mode = rgblight_config.mode;
+        //     }
+        //     return false;
     }
     return true;
 }
