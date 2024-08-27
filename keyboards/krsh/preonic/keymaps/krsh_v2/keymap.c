@@ -36,7 +36,8 @@ enum cusom_keycodes {
   M,
   SYS,
   LYRS,
-  K_SLEEP
+  K_SLEEP,
+  K_USB
 };
 
 
@@ -364,49 +365,54 @@ void persistent_default_layer_set(uint16_t default_layer) {
 // define variables for reactive RGB
 bool RGB_INIT      = false;
 bool TOG_STATUS    = false;
+bool in_sleep      = false;
 bool NUMLAY_STATUS = false; // this can be named for any toggle layer
 int  RGB_current_mode;
 uint8_t RGB_LAYER  = 0;
 
 void matrix_scan_user(void) {
     uint8_t layer = biton32(layer_state);
-    if (RGB_INIT) {
+    if (in_sleep) {
     } else {
-        RGB_current_mode = rgblight_config.mode;
-        RGB_INIT         = true;
-    }
-    if (layer == _MAIN) {
-        RGB_LAYER = _MAIN;
-        rgblight_setrgb(RGB_WHITE);
-        rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-        rgblight_setrgb(RGB_WHITE);
-    } else if (layer == _LYRS || layer == _FKEY || layer == _NUMP) {
-        if (RGB_LAYER != _LYRS || RGB_LAYER != _FKEY || RGB_LAYER != _NUMP) {
-            RGB_LAYER = layer;
-            rgblight_setrgb(RGB_RED);
-            rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-            rgblight_setrgb(RGB_RED);
+        if (RGB_INIT) {
+        } else {
+            RGB_current_mode = rgblight_config.mode;
+            RGB_INIT         = true;
+            rgblight_enable();
         }
-    } else if (layer == _MAC) {
-        if (RGB_LAYER != _MAC) {
-            RGB_LAYER = layer;
-            rgblight_setrgb(RGB_PINK);
+        if (layer == _MAIN) {
+            RGB_LAYER = _MAIN;
+            rgblight_setrgb(RGB_WHITE);
             rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-            rgblight_setrgb(RGB_PINK);
-        }
-    } else if (layer == _SYS) {
-        if (RGB_LAYER != _SYS) {
+            rgblight_setrgb(RGB_WHITE);
+        } else if (layer == _LYRS || layer == _FKEY || layer == _NUMP) {
+            if (RGB_LAYER != _LYRS || RGB_LAYER != _FKEY || RGB_LAYER != _NUMP) {
+                RGB_LAYER = layer;
+                rgblight_setrgb(RGB_RED);
+                rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+                rgblight_setrgb(RGB_RED);
+            }
+        } else if (layer == _MAC) {
+            if (RGB_LAYER != _MAC) {
+                RGB_LAYER = layer;
+                rgblight_setrgb(RGB_PINK);
+                rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+                rgblight_setrgb(RGB_PINK);
+            }
+        } else if (layer == _SYS) {
+            if (RGB_LAYER != _SYS) {
+                RGB_LAYER = layer;
+                rgblight_setrgb(RGB_GREEN);
+                rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+                rgblight_setrgb(RGB_GREEN);
+            }
+        } else {
+            // rgblight_mode(RGBLIGHT_MODE_BREATHING + 8);
             RGB_LAYER = layer;
-            rgblight_setrgb(RGB_GREEN);
+            rgblight_setrgb(RGB_BLUE);
             rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-            rgblight_setrgb(RGB_GREEN);
+            rgblight_setrgb(RGB_BLUE);
         }
-    } else {
-        // rgblight_mode(RGBLIGHT_MODE_BREATHING + 8);
-        RGB_LAYER = layer;
-        rgblight_setrgb(RGB_BLUE);
-        rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-        rgblight_setrgb(RGB_BLUE);
     }
     //   switch (layer) {
     //     case _NUMP:
@@ -455,16 +461,41 @@ void matrix_scan_user(void) {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (in_sleep) {
+        rgblight_enable();
+        rgblight_setrgb(RGB_WHITE);
+        rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+        rgblight_setrgb(RGB_WHITE);
+        in_sleep = false;
+    }
     switch (keycode) {
         case K_SLEEP:
             if (record->event.pressed) {
-              tap_code(KC_SLEP);
-              layer_move(_MAIN);
-              // Do something when pressed
+                tap_code(KC_SLEP);
+                layer_move(_MAIN);
+                rgblight_disable();
+                in_sleep = true;
             } else {
-              // Do something else when release
+                rgblight_disable();
+                in_sleep = true;
             }
             return false;
+        case QK_BOOT:
+
+            if (record->event.pressed) {
+                rgblight_setrgb(RGB_BLUE);
+                rgblight_setrgb_at(RGB_GREEN, 2);
+                rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+                rgblight_setrgb(RGB_BLUE);
+                rgblight_setrgb_at(RGB_GREEN, 2);
+            }
+            return true;
+        case KC_A:
+
+            if (record->event.pressed) {
+            } else {
+            }
+            return true;
         // case _MAIN:
         //     if (record->event.pressed) {
         //         persistent_default_layer_set(1UL << _MAIN);
