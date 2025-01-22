@@ -1,5 +1,4 @@
-Preonic
-===
+# Preonic
 
 ![Preonic](http://i.imgur.com/EDWQbB0.jpg)
 
@@ -19,3 +18,11 @@ Install examples:
     make preonic/rev3:default:dfu-util    # For Preonic rev3
 
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
+
+Steps:
+Edit Keymap
+Run QMK MSYS
+qmk compile -kb krsh/preonic/rev2 -km krsh_v2
+qmk env -> QMK_HOME ("F:/Users/Alan/Documents/KB/qmk_firmware")
+[][]
+25-===-5-=52222222---====7894561230

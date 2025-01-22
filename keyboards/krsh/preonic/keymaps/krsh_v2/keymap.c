@@ -19,6 +19,7 @@ enum krsh_layers {
   _M,
   _SYS,
   _LYRS,
+  _OFF,
 };
 
 enum cusom_keycodes {
@@ -36,8 +37,21 @@ enum cusom_keycodes {
   M,
   SYS,
   LYRS,
+  OFF,
   K_SLEEP,
-  K_USB
+  K_USB,
+  K_LPRN,
+  K_RPRN,
+  K_LCRLY,
+  K_RCRLY,
+  K_DQUOT,
+  K_S1,
+  K_S2,
+  K_S3,
+  K_S4,
+  K_S5,
+  K_S6,
+  K_S7,
 };
 
 
@@ -57,6 +71,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [_K] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
     [_L] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
     [_M] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
+    [_OFF] = { ENCODER_CCW_CW(UG_PREV, UG_NEXT) },
 };
 #endif
 
@@ -78,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,     KC_1,       KC_2,       KC_3,       KC_4,       KC_5,    KC_6,     KC_7,        KC_8,     KC_9,     KC_0,     KC_DEL,
         KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,    KC_Y,     KC_U,        KC_I,     KC_O,     KC_P,     KC_BSPC,
         KC_CAPS,    KC_A,       KC_S,       KC_D,       KC_F,       KC_G,    KC_H,     KC_J,        KC_K,     KC_L,     KC_SCLN,  KC_QUOT,
-        KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,    KC_N,     KC_M,        KC_COMM,  KC_DOT,   KC_UP,    RSFT_T(KC_ENT),
+        KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,    KC_N,     KC_M,        KC_COMM,  KC_DOT,   KC_UP,    KC_ENT,
         KC_LCTL,    KC_LALT,    KC_LGUI,    MO(_LYRS),  TT(_NUMP),  KC_SPC,  XXXXXXX,  TT(_FKEY),   KC_SLSH,  KC_LEFT,  KC_DOWN,  KC_RGHT
     ),
 
@@ -118,9 +133,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_FKEY] = LAYOUT_preonic_grid(
         _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   _______,
-        KC_ESC,   KC_F11,   KC_F12,   _______,  _______,  KC_LPRN,  KC_RPRN,  KC_DQUO,  KC_EXLM,  KC_AT,    KC_HASH,  _______,
-        KC_BSLS,  _______,  _______,  _______,  _______,  KC_LBRC,  KC_RBRC,  KC_QUOT,  KC_DLR,   KC_PERC,  KC_CIRC,  KC_HOME,
-        _______,  _______,  _______,  _______,  _______,  KC_LCBR,  KC_RCBR,  KC_GRV,   KC_AMPR,  KC_MINS,  KC_EQL,   KC_END,
+        KC_ESC,   KC_F11,   KC_F12,   _______,  _______,  K_LPRN,   K_RPRN,   K_DQUOT,  K_S1,     K_S2,     K_S3,     _______,
+        KC_BSLS,  _______,  _______,  _______,  _______,  KC_LBRC,  KC_RBRC,  KC_QUOT,  K_S4,     K_S5,     K_S6,     KC_HOME,
+        _______,  _______,  _______,  _______,  _______,  K_LCRLY,  K_RCRLY,  KC_GRV,   K_S7,     KC_MINS,  KC_EQL,   KC_END,
         _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  _______,  _______,  _______,  _______,  KC_INS
     ),
 
@@ -161,7 +176,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LYRS] = LAYOUT_preonic_grid(
         _______,      _______,  _______,   _______,  _______,  _______,  _______,  _______,        KC_MS_WH_UP,   _______,      _______,  _______,
         TG(_SYS),     TG(_MAC), TG(_F),    TG(_G),   _______,  KC_MUTE,  KC_MPLY,  KC_MS_WH_LEFT,  KC_MS_WH_DOWN, _______,      _______,  _______,
-        TO(_MAIN),    TG(_H),   TG(_I),    TG(_J),   _______,  KC_VOLU,  KC_MNXT,  KC_MS_BTN1,     KC_MS_UP,      KC_MS_BTN2,   _______,  _______,
+        TO(_OFF),     TG(_H),   TG(_I),    TG(_J),   _______,  KC_VOLU,  KC_MNXT,  KC_MS_BTN1,     KC_MS_UP,      KC_MS_BTN2,   _______,  _______,
         TO(_MAIN),    TG(_K),   TG(_L),    TG(_M),   _______,  KC_VOLD,  KC_MPRV,  KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,  KC_PGUP,  KC_MS_WH_RIGHT,
         TO(_MAIN),    _______,  _______,   _______,  _______,  _______,  XXXXXXX,  _______,        _______,       KC_HOME,      KC_PGDN,  KC_END
     ),
@@ -354,6 +369,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  _______,  _______,  _______,  _______,  _______
     ),
+
+    /*  _M
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |         |         |         |         |         |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |         |         |         |         |         |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |         |         |         |         |         |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |         |         |         |         |         |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     * |         |         |         |         |         |                   |         |         |         |         |         |
+     * -------------------------------------------------------------------------------------------------------------------------
+     */
+    [_OFF] = LAYOUT_preonic_grid(
+        TO(_MAIN),  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+        XXXXXXX,    XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+        XXXXXXX,    XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+        XXXXXXX,    XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+        XXXXXXX,    XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX
+    ),
 };
 
 // Set a layer persistently.
@@ -405,6 +441,13 @@ void matrix_scan_user(void) {
                 rgblight_setrgb(RGB_GREEN);
                 rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
                 rgblight_setrgb(RGB_GREEN);
+            }
+        } else if (layer == _OFF) {
+            if (RGB_LAYER != _OFF) {
+                RGB_LAYER = layer;
+                rgblight_setrgb(RGB_OFF);
+                rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+                rgblight_setrgb(RGB_OFF);
             }
         } else {
             // rgblight_mode(RGBLIGHT_MODE_BREATHING + 8);
@@ -469,6 +512,58 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         in_sleep = false;
     }
     switch (keycode) {
+        case K_LPRN:
+            if (record->event.pressed) {
+                register_code(KC_LSFT);
+                tap_code(KC_LBRC);
+                unregister_code(KC_LSFT);
+                send_string("TEST");
+            }
+            return false;
+        case K_RPRN:
+            if (record->event.pressed)
+                SEND_STRING(SS_LSFT("0"));
+            return false;
+        case K_LCRLY:
+            if (record->event.pressed)
+                SEND_STRING(SS_LSFT("["));
+            return false;
+        case K_RCRLY:
+            if (record->event.pressed)
+                SEND_STRING(SS_LSFT("]"));
+            return false;
+        case K_DQUOT:
+            if (record->event.pressed)
+                SEND_STRING(SS_LSFT("'"));
+            return false;
+        case K_S1:
+            if (record->event.pressed)
+                SEND_STRING(SS_LSFT("1"));
+            return false;
+        case K_S2:
+            if (record->event.pressed)
+                SEND_STRING(SS_LSFT("2"));
+            return false;
+        case K_S3:
+            if (record->event.pressed)
+                SEND_STRING(SS_LSFT("3"));
+            return false;
+        case K_S4:
+            if (record->event.pressed)
+                SEND_STRING(SS_LSFT("4"));
+            return false;
+        case K_S5:
+            if (record->event.pressed)
+                SEND_STRING(SS_LSFT("5"));
+            return false;
+        case K_S6:
+            if (record->event.pressed)
+                SEND_STRING(SS_LSFT("6"));
+            return false;
+        case K_S7:
+            if (record->event.pressed)
+                SEND_STRING(SS_LSFT("7"));
+            return false;
         case K_SLEEP:
             if (record->event.pressed) {
                 tap_code(KC_SLEP);
